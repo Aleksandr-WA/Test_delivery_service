@@ -6,7 +6,7 @@ from fastapi import (
 from sqlalchemy.ext.asyncio import AsyncSession
 from core.db_helper import db_helper
 from crud import users as users_crud
-from schemas.user import UserRead, UserCreate
+from schemas.parcels import UserRead, UserCreate
 
 router = APIRouter()
 
