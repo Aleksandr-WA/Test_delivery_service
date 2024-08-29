@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 from core.config import settings
 from models.base import Base
-from models import user  # noqa
+from models import parcels  # noqa
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
