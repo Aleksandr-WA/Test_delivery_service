@@ -2,7 +2,7 @@ from typing import Sequence
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from models.parcels import Parcel
-from schemas.user import UserCreate
+from schemas.parcels import UserCreate
 
 
 async def get_all_users(
