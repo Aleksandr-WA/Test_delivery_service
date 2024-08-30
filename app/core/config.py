@@ -13,8 +13,8 @@ class RunConfig(BaseModel):
 
 class ApiV1Prefix(BaseModel):
     prefix: str = "/v1"
-    users: str = "/users"
-    tag_users: list[str] = ["users"]
+    parcels: str = "/parcels"
+    tag_parcels: list[str] = ["parcels"]
 
 
 class ApiPrefix(BaseModel):
