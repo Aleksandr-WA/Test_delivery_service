@@ -16,7 +16,7 @@ from schemas.parcels import (
     ParcelReadParcelId,
     ParcelReadSessionId,
 )
-from tasks.tasks import process_package
+from tasks.worker import process_package
 
 router = APIRouter()
 
