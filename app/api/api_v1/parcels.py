@@ -76,6 +76,8 @@ async def get_parcels_by_session_id(
         type_id=type_id,
         cost_delivery=cost_delivery,
     )
+    if not parcels_list:
+        raise HTTPException(status_code=404, detail="Parcel not found")
     return parcels_list
 
 
@@ -91,6 +93,6 @@ async def get_parcels_by_parcel_id(
     parcels_list_id = await get_parcel_by_id(
         session=session, parcel_id=parcel_id, request=request
     )
-    if parcels_list_id is None:
+    if not parcels_list_id:
         raise HTTPException(status_code=404, detail="Parcel not found")
     return parcels_list_id

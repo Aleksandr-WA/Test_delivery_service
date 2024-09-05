@@ -6,22 +6,45 @@ import requests
 from dramatiq.brokers.rabbitmq import RabbitmqBroker
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-
+from core.config import settings
 from models.parcels import Parcel
 
-# TODO: перенести данные в env
-engine = create_engine("postgresql+psycopg2://postgres:1234@localhost:5432/app_db")
-Session = sessionmaker(bind=engine)
 
-rabbitmq_broker = RabbitmqBroker(url="amqp://guest:guest@localhost:5672/")
+URL_DATABASE_SYNC = (
+    f"postgresql+psycopg2://"
+    f"{settings.db.user}:"
+    f"{settings.db.password}@"
+    f"{settings.db.host}:"
+    f"{settings.db.port}/"
+    f"{settings.db.database}"
+)
+engine = create_engine(
+    URL_DATABASE_SYNC,
+    echo=settings.db.echo,
+    echo_pool=settings.db.echo_pool,
+    pool_size=settings.db.pool_size,
+    max_overflow=settings.db.max_overflow,
+)
+Session = sessionmaker(
+    bind=engine,
+    autoflush=False,
+    autocommit=False,
+    expire_on_commit=False,
+)
+
+URL_RABBIT = (
+    f"amqp://"
+    f"{settings.rabbit.user}:"
+    f"{settings.rabbit.password}@"
+    f"{settings.rabbit.host}:"
+    f"{settings.rabbit.port}/"
+)
+rabbitmq_broker = RabbitmqBroker(url=URL_RABBIT)
 dramatiq.set_broker(rabbitmq_broker)
 
-redis_host = "localhost"
-redis_port = 6379
-
 r = redis.Redis(
-    host=redis_host,
-    port=redis_port,
+    host=settings.redis.host,
+    port=settings.redis.port,
     decode_responses=True,
 )
 
