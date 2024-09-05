@@ -11,7 +11,8 @@ from models.parcels import Parcel
 
 
 URL_DATABASE_SYNC = (
-    f"postgresql+psycopg2://"
+    f"{settings.db.dialect}+"
+    f"{settings.db.driver_sync}://"
     f"{settings.db.user}:"
     f"{settings.db.password}@"
     f"{settings.db.host}:"
