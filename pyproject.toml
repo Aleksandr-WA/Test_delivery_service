@@ -15,6 +15,9 @@ requests = "^2.32.3"
 fastapi-cache2 = { extras = ["redis"], version = "^0.2.2" }
 dramatiq = { extras = ["rabbitmq"], version = "^1.17.0" }
 psycopg2 = "^2.9.9"
+pymysql = "^1.1.1"
+aiomysql = "^0.2.0"
+cryptography = "^43.0.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.4.2"
