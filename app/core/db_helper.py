@@ -40,7 +40,8 @@ class DatabaseHelper:
 
 
 URL_DATABASE_ASYNC = (
-    f"postgresql+asyncpg://"
+    f"{settings.db.dialect}+"
+    f"{settings.db.driver_async}://"
     f"{settings.db.user}:"
     f"{settings.db.password}@"
     f"{settings.db.host}:"
