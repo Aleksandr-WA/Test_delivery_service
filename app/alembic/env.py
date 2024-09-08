@@ -4,7 +4,6 @@ from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
-from core.config import settings
 from core.db_helper import URL_DATABASE_ASYNC
 from models.base import Base
 from models import parcels  # noqa

@@ -1,7 +1,7 @@
 """empty message
 
 Revision ID: 08ee08533b97
-Revises: 
+Revises:
 Create Date: 2024-09-05 20:48:22.731320
 
 """
@@ -41,9 +41,7 @@ def upgrade() -> None:
         sa.Column("weight", sa.Numeric(), nullable=False),
         sa.Column("type_id", sa.Integer(), nullable=False),
         sa.Column("cost_content", sa.Numeric(), nullable=False),
-        sa.Column(
-            "cost_delivery", sa.Numeric(), server_default="0.0", nullable=True
-        ),
+        sa.Column("cost_delivery", sa.Numeric(), server_default="0.0", nullable=True),
         sa.Column("session_id", sa.Integer(), nullable=False),
         sa.Column("id", sa.Integer(), nullable=False),
         sa.ForeignKeyConstraint(
@@ -61,9 +59,7 @@ def upgrade() -> None:
     op.create_index(
         op.f("ix_parcels_session_id"), "parcels", ["session_id"], unique=False
     )
-    op.create_index(
-        op.f("ix_parcels_type_id"), "parcels", ["type_id"], unique=False
-    )
+    op.create_index(op.f("ix_parcels_type_id"), "parcels", ["type_id"], unique=False)
     # ### end Alembic commands ###
 
 
