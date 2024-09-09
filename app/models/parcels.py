@@ -1,6 +1,7 @@
 from decimal import Decimal
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import Mapped, relationship, mapped_column
+from sqlalchemy.orm import Mapped, relationship
+from sqlalchemy.orm import mapped_column
 from .base import Base
 from .mixins.int_id_pk import IntIdPkMixin
 
@@ -10,7 +11,7 @@ class Parcel(IntIdPkMixin, Base):
     weight: Mapped[Decimal]
     type_id: Mapped[int] = mapped_column(ForeignKey("parcel_types.id"), index=True)
     cost_content: Mapped[Decimal]
-    cost_delivery: Mapped[Decimal] = mapped_column(nullable=True, server_default="0.0")
+    cost_delivery: Mapped[Decimal]
     session_id: Mapped[int] = mapped_column(ForeignKey("sessions.id"), index=True)
 
     type: Mapped["ParcelType"] = relationship("ParcelType", back_populates="parcels")
