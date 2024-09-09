@@ -27,7 +27,9 @@ async def test_insert_initial_data():
         }
 
 
-async def test_get_parcels_type(async_client: AsyncClient):
+async def test_get_parcels_type(
+    async_client: AsyncClient,
+):
     response = await async_client.get("/api/v1/parcels/parcels_types")
     assert response.status_code == 200
     data = response.json()
@@ -39,7 +41,9 @@ async def test_get_parcels_type(async_client: AsyncClient):
     }
 
 
-async def test_register_parcel_positive(async_client: AsyncClient):
+async def test_register_parcel_positive(
+    async_client: AsyncClient,
+):
     with patch("tasks.worker.process_package.send") as mock_send:
         response = await async_client.post(
             "/api/v1/parcels/registration",
@@ -65,7 +69,9 @@ async def test_register_parcel_positive(async_client: AsyncClient):
         assert data[0]["id"] == parcel_id
 
 
-async def test_register_parcel_negative(async_client: AsyncClient):
+async def test_register_parcel_negative(
+    async_client: AsyncClient,
+):
     with patch("tasks.worker.process_package.send"):
         response = await async_client.post(
             "/api/v1/parcels/registration",
@@ -79,20 +85,26 @@ async def test_register_parcel_negative(async_client: AsyncClient):
         assert response.status_code == 422, response.text
 
 
-async def test_get_parcels_by_session_id_positive(async_client: AsyncClient):
+async def test_get_parcels_by_session_id_positive(
+    async_client: AsyncClient,
+):
     response = await async_client.get("/api/v1/parcels/parcels_list")
     assert response.status_code == 200
     data = response.json()
     assert isinstance(data, list)
 
 
-async def test_get_parcels_by_session_id_negative(async_client: AsyncClient):
+async def test_get_parcels_by_session_id_negative(
+    async_client: AsyncClient,
+):
     response = await async_client.get(
         "/api/v1/parcels/parcels_list", cookies={"session_id": "test-session-id"}
     )
     assert response.status_code == 404
 
 
-async def test_get_parcels_by_parcel_id_negative(async_client: AsyncClient):
+async def test_get_parcels_by_parcel_id_negative(
+    async_client: AsyncClient,
+):
     response = await async_client.get("/api/v1/parcels/parcels_list/100000")
     assert response.status_code == 404, response.text
