@@ -1,6 +1,13 @@
 from typing import Annotated, Sequence
-from fastapi import APIRouter, Depends, Request, Response, Query, Path
+
+from fastapi import (
+    APIRouter,
+    Depends,
+    Request,
+    Response,
+)
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from core.db_helper import db_helper
 from crud.parcels import (
     check_session_expiry,
@@ -8,7 +15,6 @@ from crud.parcels import (
     get_all_parcel_types,
     get_all_parcel_list,
     get_parcel_by_id,
-    calculate_cost_delivery,
 )
 from models.parcels import Parcel
 from schemas.parcels import (
@@ -17,7 +23,6 @@ from schemas.parcels import (
     ParcelReadParcelId,
     ParcelReadSessionId,
 )
-
 
 router = APIRouter()
 
@@ -44,7 +49,9 @@ async def register_parcel(
         session_id=session_id,
     )
 
-    await calculate_cost_delivery(session=session, parcel=parcel)
+    def calculate_cost_delivery():
+        # TODO: calculate cost delivery
+        pass
 
     return parcel.id
 
@@ -60,7 +67,7 @@ async def get_parcels_type(
     return parcels_types
 
 
-# TODO: настроить фильтрацию по строке итогового расчета
+# отфильтровать поля как надо
 @router.get("/parcels_list", response_model=list[ParcelReadSessionId])
 async def get_parcels_by_session_id(
     session: Annotated[
@@ -68,10 +75,10 @@ async def get_parcels_by_session_id(
         Depends(db_helper.session_getter),
     ],
     request: Request,
-    skip: Annotated[int, Query(ge=0)] = 0,
-    limit: Annotated[int, Query(ge=0, le=100)] = 10,
-    type_id: Annotated[int | None, Query(ge=1, le=3)] = None,
-    cost_delivery: Annotated[bool, Query()] = None,
+    skip: int = 0,
+    limit: int = 10,
+    type_id: int | None = None,
+    cost_delivery: bool | None = None,
 ) -> Sequence[Parcel] | None:
     parcels_list = await get_all_parcel_list(
         session=session,
@@ -90,7 +97,7 @@ async def get_parcels_by_parcel_id(
         AsyncSession,
         Depends(db_helper.session_getter),
     ],
-    parcel_id: Annotated[int, Path(title="This is the parcel id", gt=0)],
+    parcel_id: int,
     request: Request,
 ) -> Sequence[Parcel] | None:
     parcels_list_id = await get_parcel_by_id(
