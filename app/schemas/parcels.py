@@ -3,28 +3,21 @@ from pydantic import BaseModel, Field
 
 
 class ParcelType(BaseModel):
-    id: int = Field(ge=1, le=3)
+    id: int
     name: str = Field(max_length=255)
 
 
 class ParcelBase(BaseModel):
     name: str = Field(max_length=255)
-    weight: Decimal = Field(ge=0)
-    cost_content: Decimal = Field(ge=0)
+    weight: Decimal
+    cost_content: Decimal
 
 
 class ParcelCreate(ParcelBase):
     type_id: int = Field(ge=1, le=3)
 
 
-class ParcelReadBase(BaseModel):
+class ParcelRead(ParcelCreate):
     id: int
-    cost_delivery: Decimal | None
-
-
-class ParcelReadParcelId(ParcelReadBase, ParcelCreate):
-    pass
-
-
-class ParcelReadSessionId(ParcelReadBase, ParcelBase):
     type: ParcelType
+    coast_delivery: Decimal | None
