@@ -73,18 +73,14 @@ async def get_all_parcel_list(
         session=session,
         request=request,
     )
-    filters = [Parcel.session_id == session_id]
-    if type_id is not None:
-        filters.append(Parcel.type_id == type_id)
-    if cost_delivery is not None:
-        if cost_delivery:
-            filters.append(Parcel.cost_delivery.isnot(None))
-        else:
-            filters.append(Parcel.cost_delivery.is_(None))
     query = (
         select(Parcel)
         .options(joinedload(Parcel.type))
-        .filter(*filters)
+        .filter(
+            Parcel.session_id == session_id,
+            Parcel.type_id == type_id if type_id else True,
+            Parcel.cost_delivery.isnot(None) if cost_delivery else True,
+        )
         .offset(skip)
         .limit(limit)
     )
