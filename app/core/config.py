@@ -56,21 +56,6 @@ class DatabaseConfig(BaseModel):
     }
 
 
-class TestDatabaseConfig(BaseModel):
-    dialect: str
-    driver_async: str
-    driver_sync: str
-    host: str
-    port: int
-    user: str
-    password: str
-    database: str
-    echo: bool = False
-    echo_pool: bool = False
-    pool_size: int = 50
-    max_overflow: int = 10
-
-
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=(".env.template", ".env"),
@@ -81,7 +66,6 @@ class Settings(BaseSettings):
     run: RunConfig = RunConfig()
     api: ApiPrefix = ApiPrefix()
     db: DatabaseConfig
-    db_test: TestDatabaseConfig
     redis: RedisConfig
     rabbit: RabbitConfig
 
