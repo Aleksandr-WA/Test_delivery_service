@@ -1,16 +1,14 @@
-import uuid
 from typing import Annotated
 from fastapi import APIRouter, Depends, Request, Response, Query, Path
 from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from core.db_helper import db_helper
 from crud.parcels import (
+    check_session_expiry,
     create_parcel,
     get_all_parcel_types,
     get_all_parcel_list,
     get_parcel_by_id,
-    set_session_id,
-    get_session_id,
 )
 from schemas.parcels import (
     ParcelCreate,
@@ -33,17 +31,11 @@ async def register_parcel(
     request: Request,
     response: Response,
 ) -> int:
-    session_id = await get_session_id(
-        session=session,
+    session_id = await check_session_expiry(
         request=request,
+        response=response,
+        session=session,
     )
-    if not session_id:
-        session_value = str(uuid.uuid4())
-        response.set_cookie(key="session_id", value=session_value)
-        session_id = await set_session_id(
-            session=session,
-            session_value=session_value,
-        )
     parcel = await create_parcel(
         session=session,
         parcel_create=parcel_create,
@@ -84,6 +76,8 @@ async def get_parcels_by_session_id(
         type_id=type_id,
         cost_delivery=cost_delivery,
     )
+    if not parcels_list:
+        raise HTTPException(status_code=404, detail="Parcel not found")
     return parcels_list
 
 

@@ -1,5 +1,6 @@
+import uuid
 from typing import Sequence
-from fastapi import Request
+from fastapi import Request, Response
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
@@ -21,6 +22,25 @@ async def create_parcel(
     return parcel
 
 
+async def check_session_expiry(
+    request: Request,
+    response: Response,
+    session: AsyncSession,
+) -> int:
+    session_object = await get_session_id(
+        session=session,
+        request=request,
+    )
+    if session_object:
+        return session_object
+    session_id = str(uuid.uuid4())
+    response.set_cookie(key="session_id", value=session_id)
+    stmt = Session(name=session_id)
+    session.add(stmt)
+    await session.commit()
+    return stmt.id
+
+
 async def get_session_id(
     session: AsyncSession,
     request: Request,
@@ -32,16 +52,6 @@ async def get_session_id(
     result = await session.execute(query)
     session_object = result.scalars().first()
     return session_object.id if session_object else None
-
-
-async def set_session_id(
-    session: AsyncSession,
-    session_value: str,
-) -> int:
-    stmt = Session(name=session_value)
-    session.add(stmt)
-    await session.commit()
-    return stmt.id
 
 
 async def get_all_parcel_types(
