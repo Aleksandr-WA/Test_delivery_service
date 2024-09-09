@@ -1,20 +1,21 @@
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
+from fastapi.responses import ORJSONResponse
 from fastapi.openapi.docs import (
     get_redoc_html,
     get_swagger_ui_html,
     get_swagger_ui_oauth2_redirect_html,
 )
-from fastapi.responses import ORJSONResponse
 
 from core.db_helper import db_helper
-from utils.init_parcels_types import insert_initial_data
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await insert_initial_data()
+    # startup
     yield
+    # shutdown
     await db_helper.dispose()
 
 
