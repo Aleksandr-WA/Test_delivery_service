@@ -49,7 +49,6 @@ URL_DATABASE_ASYNC = (
     f"{settings.db.database}"
 )
 
-
 db_helper = DatabaseHelper(
     url=URL_DATABASE_ASYNC,
     echo=settings.db.echo,
