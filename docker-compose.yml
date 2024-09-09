@@ -5,9 +5,9 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: ${APP_CONFIG__DB__DATABASE}
-      MYSQL_USER: ${APP_CONFIG__DB__USER}
-      MYSQL_PASSWORD: ${APP_CONFIG__DB__PASSWORD}
+      MYSQL_DATABASE: ${DB__DATABASE}
+      MYSQL_USER: ${DB__USER}
+      MYSQL_PASSWORD: ${DB__PASSWORD}
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       timeout: 20s
@@ -26,8 +26,8 @@ services:
       - "5672:5672"
       - "15672:15672"
     environment:
-      RABBITMQ_DEFAULT_USER: ${APP_CONFIG__RABBIT__USER}
-      RABBITMQ_DEFAULT_PASS: ${APP_CONFIG__RABBIT__PASSWORD}
+      RABBITMQ_DEFAULT_USER: ${RABBIT__USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBIT__PASSWORD}
     env_file:
       - .env
 
