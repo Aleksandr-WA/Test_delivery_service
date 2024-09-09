@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from pydantic import PostgresDsn
 from pydantic_settings import (
     BaseSettings,
     SettingsConfigDict,
@@ -34,9 +35,6 @@ class ApiPrefix(BaseModel):
 
 
 class DatabaseConfig(BaseModel):
-    dialect: str
-    driver_async: str
-    driver_sync: str
     host: str
     port: int
     user: str
