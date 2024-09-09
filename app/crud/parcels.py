@@ -33,6 +33,7 @@ async def check_session_expiry(
     )
     if session_object:
         return session_object
+
     session_id = str(uuid.uuid4())
     response.set_cookie(key="session_id", value=session_id)
     stmt = Session(name=session_id)
@@ -44,10 +45,8 @@ async def check_session_expiry(
 async def get_session_id(
     session: AsyncSession,
     request: Request,
-) -> int | None:
+) -> int:
     session_id = request.cookies.get("session_id")
-    if not session_id:
-        return None
     query = select(Session).filter(Session.name == session_id)
     result = await session.execute(query)
     session_object = result.scalars().first()
