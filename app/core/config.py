@@ -5,8 +5,6 @@ from pydantic_settings import (
     SettingsConfigDict,
 )
 
-# TODO: написать конфиги для redis and sync db rabbit
-
 
 class RunConfig(BaseModel):
     host: str = "127.0.0.1"

@@ -12,9 +12,6 @@ asyncpg = "^0.29.0"
 alembic = "^1.13.1"
 orjson = "^3.10.7"
 requests = "^2.32.3"
-fastapi-cache2 = {extras = ["redis"], version = "^0.2.2"}
-dramatiq = {extras = ["rabbitmq"], version = "^1.17.0"}
-psycopg2 = "^2.9.9"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.4.2"

@@ -1,11 +1,16 @@
 import uuid
+from decimal import Decimal
+from tkinter.constants import ROUND
 from typing import Sequence
+
 from fastapi import Request, Response
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
+
 from models.parcels import Parcel, Session, ParcelType
 from schemas.parcels import ParcelCreate
+from utils.get_dollar_rate import get_dollar_rate
 
 
 async def create_parcel(
@@ -31,6 +36,7 @@ async def check_session_expiry(
         session=session,
         request=request,
     )
+
     if session_object:
         return session_object
 
@@ -73,6 +79,7 @@ async def get_all_parcel_list(
         session=session,
         request=request,
     )
+
     query = (
         select(Parcel)
         .options(joinedload(Parcel.type))
@@ -84,6 +91,7 @@ async def get_all_parcel_list(
         .offset(skip)
         .limit(limit)
     )
+
     result = await session.execute(query)
     parcels_list = result.scalars().all()
     return parcels_list
@@ -104,3 +112,26 @@ async def get_parcel_by_id(
     result = await session.execute(query)
     parcels_list_id = result.scalars().all()
     return parcels_list_id
+
+
+async def calculate_cost_delivery(
+    session: AsyncSession,
+    parcel: Parcel,
+):
+    dollars_rate = await get_dollar_rate()
+
+    cost_delivery = round(
+        (
+            (Decimal("0.5") * parcel.weight + parcel.cost_content * Decimal("0.01"))
+            * dollars_rate
+        ),
+        2,
+    )
+
+    stmt = (
+        update(Parcel)
+        .filter(Parcel.id == parcel.id)
+        .values(cost_delivery=cost_delivery)
+    )
+    await session.execute(stmt)
+    await session.commit()

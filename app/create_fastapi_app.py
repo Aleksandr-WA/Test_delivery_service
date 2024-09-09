@@ -6,6 +6,7 @@ from fastapi.openapi.docs import (
     get_swagger_ui_oauth2_redirect_html,
 )
 from fastapi.responses import ORJSONResponse
+
 from core.db_helper import db_helper
 from utils.init_parcels_types import insert_initial_data
 
