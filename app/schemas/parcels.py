@@ -9,8 +9,8 @@ class ParcelType(BaseModel):
 
 class ParcelBase(BaseModel):
     name: str = Field(max_length=255)
-    weight: Decimal = Field(gt=0)
-    cost_content: Decimal = Field(gt=0)
+    weight: Decimal = Field(ge=0)
+    cost_content: Decimal = Field(ge=0)
 
 
 class ParcelCreate(ParcelBase):

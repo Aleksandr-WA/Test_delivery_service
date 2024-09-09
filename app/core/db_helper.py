@@ -39,17 +39,8 @@ class DatabaseHelper:
             yield session
 
 
-URL_DATABASE_ASYNC = (
-    f"postgresql+asyncpg://"
-    f"{settings.db.user}:"
-    f"{settings.db.password}@"
-    f"{settings.db.host}:"
-    f"{settings.db.port}/"
-    f"{settings.db.database}"
-)
-
 db_helper = DatabaseHelper(
-    url=URL_DATABASE_ASYNC,
+    url=str(settings.db.url),
     echo=settings.db.echo,
     echo_pool=settings.db.echo_pool,
     pool_size=settings.db.pool_size,

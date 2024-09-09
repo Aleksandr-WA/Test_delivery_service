@@ -5,17 +5,7 @@ from pydantic_settings import (
     SettingsConfigDict,
 )
 
-
-class RabbitConfig(BaseModel):
-    host: str
-    port: int
-    user: str
-    password: str
-
-
-class RedisConfig(BaseModel):
-    host: str
-    port: int
+# TODO: написать конфиги для redis and sync db rabbit
 
 
 class RunConfig(BaseModel):
@@ -35,11 +25,7 @@ class ApiPrefix(BaseModel):
 
 
 class DatabaseConfig(BaseModel):
-    host: str
-    port: int
-    user: str
-    password: str
-    database: str
+    url: PostgresDsn
     echo: bool = False
     echo_pool: bool = False
     pool_size: int = 50
@@ -64,8 +50,6 @@ class Settings(BaseSettings):
     run: RunConfig = RunConfig()
     api: ApiPrefix = ApiPrefix()
     db: DatabaseConfig
-    redis: RedisConfig
-    rabbit: RabbitConfig
 
 
 settings = Settings()
