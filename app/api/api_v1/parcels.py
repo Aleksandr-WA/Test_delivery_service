@@ -39,10 +39,7 @@ async def register_parcel(
     )
     if not session_id:
         session_value = str(uuid.uuid4())
-        response.set_cookie(
-            key="session_id",
-            value=session_value,
-        )
+        response.set_cookie(key="session_id", value=session_value)
         session_id = await set_session_id(
             session=session,
             session_value=session_value,
