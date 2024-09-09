@@ -53,7 +53,5 @@ def get_dollar_rate():
         usd_rate = data["Valute"]["USD"]["Value"]
         r.setex("usd_to_rub", timedelta(hours=1), usd_rate)
         return usd_rate
-    except requests.exceptions.RequestException as e:
-        raise requests.exceptions.RequestException(
-            f"Ошибка при получении данных из API: {e}"
-        )
+    except requests.RequestException as e:
+        raise Exception(f"Ошибка при получении данных из API: {e}")
