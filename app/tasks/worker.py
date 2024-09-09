@@ -43,7 +43,7 @@ URL_RABBIT = (
 rabbitmq_broker = RabbitmqBroker(url=URL_RABBIT)
 dramatiq.set_broker(rabbitmq_broker)
 
-r = redis.Redis(
+redis_client = redis.Redis(
     host=settings.redis.host,
     port=settings.redis.port,
     decode_responses=True,
@@ -67,7 +67,7 @@ def process_package(parcel_id: int):
 
 
 def get_dollar_rate():
-    cached_rate = r.get("usd_to_rub")
+    cached_rate = redis_client.get("usd_to_rub")
     if cached_rate:
         return cached_rate
     try:
@@ -75,7 +75,7 @@ def get_dollar_rate():
         response.raise_for_status()
         data = response.json()
         usd_rate = data["Valute"]["USD"]["Value"]
-        r.setex("usd_to_rub", timedelta(hours=1), usd_rate)
+        redis_client.setex("usd_to_rub", timedelta(hours=1), usd_rate)
         return usd_rate
     except requests.exceptions.RequestException as e:
         raise requests.exceptions.RequestException(
