@@ -6,7 +6,10 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-async def validation_exception_handler(request: Request, exc: RequestValidationError):
+async def validation_exception_handler(
+    request: Request,
+    exc: RequestValidationError,
+) -> JSONResponse:
     logger.error(f"Validation error: {exc.errors()}")
     return JSONResponse(
         status_code=400,
@@ -14,7 +17,10 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     )
 
 
-async def http_exception_handler(request: Request, exc: HTTPException):
+async def http_exception_handler(
+    request: Request,
+    exc: HTTPException,
+) -> JSONResponse:
     logger.error(f"HTTP error: {exc.detail}")
     return JSONResponse(
         status_code=exc.status_code,
@@ -22,7 +28,10 @@ async def http_exception_handler(request: Request, exc: HTTPException):
     )
 
 
-async def general_exception_handler(request: Request, exc: Exception):
+async def general_exception_handler(
+    request: Request,
+    exc: Exception,
+) -> JSONResponse:
     logger.error(f"Unexpected error occurred: {exc}", exc_info=True)
     return JSONResponse(
         status_code=500,
