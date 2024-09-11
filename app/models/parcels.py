@@ -1,8 +1,8 @@
-from decimal import Decimal
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import Mapped, relationship, mapped_column
 from .base import Base
 from .mixins.int_id_pk import IntIdPkMixin
+from decimal import Decimal
 
 
 class Parcel(IntIdPkMixin, Base):

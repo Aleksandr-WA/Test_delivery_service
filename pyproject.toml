@@ -3,10 +3,9 @@ package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
-fastapi = "^0.111.0"
-uvicorn = { extras = ["standard"], version = "^0.29.0" }
-pydantic = { extras = ["email"], version = "^2.7.1" }
-pydantic-settings = "^2.2.1"
+uvicorn = { extras = ["standard"], version = "^0.30.6" }
+pydantic = { extras = ["email"], version = "^2.9.1" }
+pydantic-settings = "^2.5.2"
 sqlalchemy = { extras = ["asyncio"], version = "^2.0.30" }
 alembic = "^1.13.1"
 requests = "^2.32.3"
@@ -16,6 +15,7 @@ aiomysql = "^0.2.0"
 cryptography = "^43.0.1"
 redis = "^5.0.8"
 orjson = "^3.10.7"
+fastapi = "^0.114.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.2"
