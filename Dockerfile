@@ -12,7 +12,7 @@ COPY . .
 
 ENV PYTHONUNBUFFERED=1
 
-WORKDIR /app
+WORKDIR app
 
 
 
