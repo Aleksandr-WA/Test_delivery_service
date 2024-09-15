@@ -16,6 +16,8 @@ cryptography = "^43.0.1"
 redis = "^5.0.8"
 orjson = "^3.10.7"
 fastapi = "^0.114.1"
+sentry-sdk = {extras = ["fastapi"], version = "^2.14.0"}
+prometheus-fastapi-instrumentator = "^7.0.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.2"
